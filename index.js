@@ -3,7 +3,8 @@ const bodyParser = require('body-parser')
 
 //local imports
 const connectDb = require('./db')
-const employeeRoutes = require('./controllers/employee.controller')
+const employeeRoutes = require('./controllers/employee.controller');
+const { errorHandler } = require('./middlewares');
 
 
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 // middleware
 app.use(bodyParser.json())
 app.use('/api/employees', employeeRoutes)
+app.use(errorHandler)
 
 
 connectDb()
