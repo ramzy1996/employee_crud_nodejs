@@ -3,11 +3,11 @@ const router = express.Router()
 
 const Employee = require('../models/employee.model')
 const { generateCrudMethods } = require('../services')
-const { validDbId, record404Error } = require('../middlewares')
 const emp = generateCrudMethods(Employee)
+const { validDbId, record404Error } = require('../middlewares');
 
 router.get('/', (req, res, next) => {
-    emp.getAll
+    emp.getAll()
         .then(data => res.send(data))
         .catch(err => next(err))
 })
@@ -23,13 +23,25 @@ router.get('/:id', validDbId, (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    emp.create(req.body)
+    const newRecord = {
+        fullName: req.body.fullName,
+        position: req.body.position,
+        location: req.body.location,
+        salary: req.body.salary,
+    }
+    emp.create(newRecord)
         .then(data => res.status(201).json(data))
         .catch(err => next(err))
 })
 
 router.put('/:id', validDbId, (req, res) => {
-    emp.update(req.params.id, req.body)
+    const updatedRecord = {
+        fullName: req.body.fullName,
+        position: req.body.position,
+        location: req.body.location,
+        salary: req.body.salary,
+    }
+    emp.update(req.params.id, updatedRecord)
         .then(data => {
             if (data) {
                 res.send(data)
